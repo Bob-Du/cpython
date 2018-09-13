@@ -825,18 +825,14 @@ _PyMemoTable_ResizeTable(PyMemoTable *self, Py_ssize_t min_size)
 {
     PyMemoEntry *oldtable = NULL;
     PyMemoEntry *oldentry, *newentry;
-    Py_ssize_t new_size = MT_MINSIZE;
+    size_t new_size = MT_MINSIZE;
     Py_ssize_t to_process;
 
     assert(min_size > 0);
 
     /* Find the smallest valid table size >= min_size. */
-    while (new_size < min_size && new_size > 0)
+    while (new_size < min_size)
         new_size <<= 1;
-    if (new_size <= 0) {
-        PyErr_NoMemory();
-        return -1;
-    }
     /* new_size needs to be a power of two. */
     assert((new_size & (new_size - 1)) == 0);
 
